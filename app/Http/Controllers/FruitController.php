@@ -9,11 +9,10 @@ class FruitController extends Controller
 {
     public function index()
     {
-        $fruits = Fruit::all();
-         $fruits = [
-            ['id' => 1, 'name' => 'Maçã', 'price' => 1.50],
-            ['id' => 2, 'name' => 'Banana', 'price' => 0.80],
-            ['id' => 3, 'name' => 'Laranja', 'price' => 1.20],
+        $fruits = [
+            ['id' => 1, 'name' => 'Maçã', 'price' => 75.00],
+            ['id' => 2, 'name' => 'Banana', 'price' => 40.00],
+            ['id' => 3, 'name' => 'Laranja', 'price' => 60.00],
         ];
         
         return Inertia::render('Fruits/Index', [
