@@ -18,9 +18,7 @@
                                 placeholder="Buscar frutas..."
                                 class="w-full px-6 py-3 pl-12 border-2 border-green-200 rounded-full focus:border-green-500 focus:ring-green-500 transition"
                             />
-                            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
+                            <Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-600"/>
                         </div>
                     </div>
 
@@ -28,16 +26,14 @@
                     <div class="flex items-center gap-4">
                         <Link :href="route('cart.index')" class="relative">
                             <div class="p-3 bg-green-100 rounded-full hover:bg-green-200 transition">
-                                <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                </svg>
+                                <ShoppingCart class="h-6 w-6 text-green-700"/>
                             </div>
                         </Link>
                         
                         <div class="text-right">
                             <p class="text-sm text-green-700 font-semibold">{{ $page.props.auth.user.name }}</p>
                             <Link :href="route('logout')" method="post" as="button" class="text-xs text-green-600 hover:text-green-800">
-                                Sair
+                                <LogOut class="h-4 w-6"/>
                             </Link>
                         </div>
                     </div>
@@ -92,7 +88,7 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                         <div class="absolute top-3 right-3">
-                            <span class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
+                            <span class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg">
                                 {{ fruit.price.toFixed(2) }} MT
                             </span>
                         </div>
@@ -112,9 +108,7 @@
                             @click="addToCart(fruit)"
                             class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                         >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
+                            <ShoppingCart class="w-5 h-5 text-white" />
                             Adicionar ao Carrinho
                         </button>
                     </div>
@@ -123,9 +117,7 @@
 
             <!-- Empty State -->
             <div v-else class="text-center py-20">
-                <svg class="w-24 h-24 mx-auto text-green-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+              <Frown class="w-20 h-20 mx-auto text-green-300 mb-4"/>  
                 <h3 class="text-2xl font-bold text-green-700 mb-2">Nenhuma fruta encontrada</h3>
                 <p class="text-green-600">Tente buscar por outro nome ou categoria</p>
             </div>
@@ -136,7 +128,7 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
-import { Search } from 'lucide-vue-next';
+import { Search, ShoppingCart, Frown, LogOut } from 'lucide-vue-next';
 
 const props = defineProps({
     fruits: Array
@@ -176,6 +168,7 @@ const filteredFruits = computed(() => {
 function addToCart(fruit) {
     router.post('/cart/add', {
         id: fruit.id,
+        image: fruit.image,
         name: fruit.name,
         price: fruit.price
     }, {
