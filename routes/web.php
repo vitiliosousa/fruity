@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 });
 
 

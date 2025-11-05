@@ -61,6 +61,36 @@ class CartController extends Controller
         return redirect()->back()->with('error', 'Item não encontrado!');
     }
 
+
+    public function update(Request $request)
+{
+    $cart = session()->get('cart', []);
+
+    $index = $request->index;
+    $quantity = $request->quantity;
+
+    // Se o item não existe no carrinho
+    if (!isset($cart[$index])) {
+        return redirect()->back()->with('error', 'Item não encontrado no carrinho.');
+    }
+
+    // Se quantidade <= 0, remove o item
+    if ($quantity <= 0) {
+        unset($cart[$index]);
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('success', 'Item removido do carrinho.');
+    }
+
+    // Atualiza quantidade
+    $cart[$index]['quantity'] = $quantity;
+
+    session()->put('cart', $cart);
+
+    return redirect()->back()->with('success', 'Quantidade atualizada com sucesso!');
+}
+
+
     public function checkout(Request $request)
     {
         $cart = $request->session()->get('cart', []);
