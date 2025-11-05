@@ -36,6 +36,7 @@ class CartController extends Controller
                 'id' => $request->id,
                 'name' => $request->name,
                 'price' => $request->price,
+                'image'=> $request->image,
                 'quantity' => $request->quantity ?? 1,
             ];
             $cart[] = $item;
@@ -130,7 +131,7 @@ class CartController extends Controller
             $resend = Resend::client(config('services.resend.key'));
             
             $result = $resend->emails->send([
-                'from' => 'Loja de Frutas <onboarding@resend.dev>',
+                'from' => 'Fruity <onboarding@resend.dev>',
                 'to' => [$customerEmail],
                 'subject' => 'Confirmação de Pedido #' . $orderNumber,
                 'html' => $emailHtml,

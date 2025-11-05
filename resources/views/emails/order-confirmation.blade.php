@@ -57,7 +57,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>🍎 Confirmação de Pedido</h1>
+        <h1>Fruity</h1>
     </div>
     
     <div class="content">
