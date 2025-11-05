@@ -9,5 +9,11 @@ class Fruit extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'stock', 'image', 'description'];
+    protected $fillable = [
+        'name',
+        'price',
+        'image',
+        'description',
+        'category',
+    ];
 }
