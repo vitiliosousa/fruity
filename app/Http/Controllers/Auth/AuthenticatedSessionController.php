@@ -33,7 +33,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('fruits.index', absolute: false));
+        // Redirecionar baseado no tipo de usuário
+        $intendedRoute = Auth::user()->isAdmin()
+            ? route('admin.index', absolute: false)
+            : route('fruits.index', absolute: false);
+
+        return redirect()->intended($intendedRoute);
     }
 
     /**

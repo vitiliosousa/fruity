@@ -9,15 +9,25 @@ use Illuminate\Support\Facades\Hash;
 class AdminUserSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Criar usuário administrador para desenvolvimento.
+     *
+     * AVISO: Esta senha é fraca e deve ser alterada em produção!
+     * Use este seeder apenas em ambiente de desenvolvimento/teste.
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@example.com', // Email do admin
-            'password' => Hash::make('password123'), // Senha do admin
-            'is_admin' => true, // Marca como admin
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Administrador',
+                'password' => Hash::make('password123'),
+                'is_admin' => true,
+                'email_verified_at' => now(),
+            ]
+        );
+
+        $this->command->info('✓ Usuário admin criado/atualizado com sucesso!');
+        $this->command->warn('⚠ Email: admin@example.com | Senha: password123');
+        $this->command->warn('⚠ ALTERE ESTA SENHA EM PRODUÇÃO!');
     }
 }

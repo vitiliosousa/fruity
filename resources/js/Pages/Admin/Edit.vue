@@ -128,16 +128,17 @@ function submitForm() {
   errors.value = {};
 
   const formData = new FormData();
+  formData.append('_method', 'PUT');
   formData.append('name', form.value.name ?? '');
   formData.append('description', form.value.description ?? '');
   formData.append('price', form.value.price != null ? form.value.price : '');
   formData.append('category', form.value.category ?? '');
-  
+
   if (form.value.image) {
     formData.append('image', form.value.image);
   }
 
-  router.put(route('admin.update', props.fruit.id), formData, {
+  router.post(route('admin.update', props.fruit.id), formData, {
     preserveScroll: true,
     onSuccess: () => {
       processing.value = false;

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('fruits', function (Blueprint $table) {
             $table->dropColumn('stock'); // remove stock
-            $table->string('category')->after('description')->nullable(); // adiciona categoria
         });
     }
 
@@ -24,7 +23,6 @@ return new class extends Migration
     {
         Schema::table('fruits', function (Blueprint $table) {
             $table->integer('stock')->default(0); // re-adiciona stock
-            $table->dropColumn('category'); // remove categoria
         });
     }
 };

@@ -86,8 +86,13 @@
                 </p>
             </div>
 
-            <!-- ✅ Grid -->
-            <div v-if="filteredFruits.length > 0"
+            <!-- ✅ Grid com Skeleton -->
+            <div v-if="isPageLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <FruitSkeleton v-for="n in 12" :key="n" />
+            </div>
+
+            <!-- ✅ Grid Normal -->
+            <div v-else-if="filteredFruits.length > 0"
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                 <div v-for="fruit in filteredFruits" :key="fruit.id"
@@ -133,6 +138,35 @@
                 <p class="text-green-600">Tente buscar por outro nome ou categoria</p>
             </div>
 
+            <!-- ✅ Paginação -->
+            <div v-if="fruits.links && fruits.links.length > 3 && !isPageLoading"
+                class="mt-12 flex items-center justify-center gap-2">
+
+                <!-- Botão Anterior -->
+                <button @click="goToPage(fruits.prev_page_url)" :disabled="!fruits.prev_page_url"
+                    class="px-4 py-2 bg-white border-2 border-green-600 text-green-600 rounded-lg font-semibold hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2">
+                    <ChevronLeft class="w-5 h-5" />
+                    Anterior
+                </button>
+
+                <!-- Números de Página -->
+                <div class="flex gap-2">
+                    <button v-for="(link, index) in fruits.links.slice(1, -1)" :key="index"
+                        @click="goToPage(link.url)" :disabled="link.active"
+                        :class="link.active ? 'bg-green-600 text-white' : 'bg-white text-green-600 hover:bg-green-50'"
+                        class="px-4 py-2 border-2 border-green-600 rounded-lg font-semibold transition disabled:cursor-default">
+                        {{ link.label }}
+                    </button>
+                </div>
+
+                <!-- Botão Próximo -->
+                <button @click="goToPage(fruits.next_page_url)" :disabled="!fruits.next_page_url"
+                    class="px-4 py-2 bg-white border-2 border-green-600 text-green-600 rounded-lg font-semibold hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2">
+                    Próximo
+                    <ChevronRight class="w-5 h-5" />
+                </button>
+            </div>
+
         </main>
     </div>
 </template>
@@ -140,9 +174,10 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
-import { Search, ShoppingCart, Frown, LogOut, Check, Loader2, User } from 'lucide-vue-next';
+import { Search, ShoppingCart, Frown, LogOut, Check, Loader2, User, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import FruitSkeleton from '@/Components/FruitSkeleton.vue';
 
-const props = defineProps({ fruits: Array });
+const props = defineProps({ fruits: Object });
 
 const searchQuery = ref('');
 const selectedCategory = ref('Todas');
@@ -152,15 +187,16 @@ const loading = ref({});
 const showToast = ref(false);
 const lastAddedItem = ref('');
 const cartItemCount = ref(0);
+const isPageLoading = ref(false);
 
 // ✅ Categorias únicas
 const categories = computed(() => {
-    return [...new Set(props.fruits.map(f => f.category))].sort();
+    return [...new Set(props.fruits.data.map(f => f.category))].sort();
 });
 
 // ✅ Filtragem
 const filteredFruits = computed(() => {
-    let results = props.fruits;
+    let results = props.fruits.data;
 
     if (selectedCategory.value !== 'Todas') {
         results = results.filter(f => f.category === selectedCategory.value);
@@ -204,6 +240,22 @@ function addToCart(fruit) {
         },
         onError: () => {
             loading.value[fruit.id] = false;
+        }
+    });
+}
+
+// ✅ Navegação de página
+function goToPage(url) {
+    if (!url) return;
+
+    isPageLoading.value = true;
+
+    router.visit(url, {
+        preserveScroll: true,
+        preserveState: true,
+        onFinish: () => {
+            isPageLoading.value = false;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
 }

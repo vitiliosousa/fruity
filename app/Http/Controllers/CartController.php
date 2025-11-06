@@ -143,13 +143,34 @@ class CartController extends Controller
             
             // Limpa o carrinho após pagamento bem-sucedido
             $request->session()->forget('cart');
-            
-            return redirect()->route('cart.index')->with('success', 'Pagamento realizado com sucesso! Verifique seu email para o resumo da compra.');
+
+            // Armazena informações do pedido na sessão para exibir na tela de sucesso
+            $request->session()->flash('order', [
+                'order_number' => $orderNumber,
+                'total' => $total,
+                'date' => $orderDate,
+            ]);
+
+            return redirect()->route('order.success');
         } catch (\Exception $e) {
             \Log::error('Erro ao enviar email: ' . $e->getMessage());
             \Log::error($e->getTraceAsString());
-            
+
             return redirect()->back()->with('error', 'Erro ao processar pagamento: ' . $e->getMessage());
         }
+    }
+
+    public function success(Request $request)
+    {
+        $order = $request->session()->get('order');
+
+        // Se não houver informações do pedido, redireciona para o carrinho
+        if (!$order) {
+            return redirect()->route('cart.index');
+        }
+
+        return Inertia::render('Cart/Success', [
+            'order' => $order,
+        ]);
     }
 }

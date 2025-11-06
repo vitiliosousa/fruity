@@ -10,8 +10,8 @@ class FruitController extends Controller
 {
     public function index(Request $request)
     {
-        // Busca todas as frutas do banco, ordenadas pelo mais recente
-        $fruits = Fruit::orderBy('created_at', 'desc')->get();
+        // Busca as frutas do banco com paginação (12 por página)
+        $fruits = Fruit::orderBy('created_at', 'desc')->paginate(12);
 
         // Recupera o carrinho da sessão
         $cart = $request->session()->get('cart', []);

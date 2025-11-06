@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"C:\\Users\\VITILIO SOUSA\\Desktop\\laravel\\fruity\\database\\migrations\\2025_11_06_033430_add_is_admin_to_users_table.php\")",
+      "Bash(php artisan migrate:fresh:*)",
+      "Bash(php artisan tinker:*)",
+      "Bash(php artisan:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -39,12 +39,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::get('/order/success', [CartController::class, 'success'])->name('order.success');
 });
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/create', [AdminController::class, 'create'])->name('create');
-    
+
     Route::post('/', [AdminController::class, 'store'])->name('store');
 
     Route::prefix('{fruit}')->group(function () {
