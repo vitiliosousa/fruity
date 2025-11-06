@@ -17,7 +17,6 @@ class Fruit extends Model
         'category',
     ];
 
-    // Cast para garantir que price seja sempre float
     protected $casts = [
         'price' => 'float',
     ];
