@@ -24,61 +24,61 @@ const form = useForm({
 
 <template>
     <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">
-                Profile Information
+        <!-- Header -->
+        <header class="mb-6">
+            <h2 class="text-2xl font-bold text-green-700">
+                Informações do Perfil
             </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
+            <p class="mt-2 text-gray-600">
+                Atualize as informações do seu perfil e endereço de e-mail.
             </p>
         </header>
 
+        <!-- Formulário -->
         <form
             @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
+            class="space-y-6"
         >
+            <!-- Nome -->
             <div>
-                <InputLabel for="name" value="Name" />
-
+                <InputLabel for="name" value="Nome" class="text-green-700" />
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full border-green-200 focus:border-green-500 focus:ring-green-500 rounded-xl"
                     v-model="form.name"
                     required
                     autofocus
                     autocomplete="name"
                 />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2 text-red-500" :message="form.errors.name" />
             </div>
 
+            <!-- Email -->
             <div>
-                <InputLabel for="email" value="Email" />
-
+                <InputLabel for="email" value="E-mail" class="text-green-700" />
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full border-green-200 focus:border-green-500 focus:ring-green-500 rounded-xl"
                     v-model="form.email"
                     required
                     autocomplete="username"
                 />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2 text-red-500" :message="form.errors.email" />
             </div>
 
+            <!-- Verificação de email -->
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800">
-                    Your email address is unverified.
+                    Seu endereço de e-mail não está verificado.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="text-green-600 underline hover:text-green-800 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                     >
-                        Click here to re-send the verification email.
+                        Clique aqui para reenviar o e-mail de verificação
                     </Link>
                 </p>
 
@@ -86,24 +86,27 @@ const form = useForm({
                     v-show="status === 'verification-link-sent'"
                     class="mt-2 text-sm font-medium text-green-600"
                 >
-                    A new verification link has been sent to your email address.
+                    Um novo link de verificação foi enviado para seu e-mail.
                 </div>
             </div>
 
+            <!-- Botão Salvar -->
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton
+                    :disabled="form.processing"
+                    class="bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-md px-6 py-3"
+                >
+                    Salvar
+                </PrimaryButton>
 
                 <Transition
-                    enter-active-class="transition ease-in-out"
+                    enter-active-class="transition ease-in-out duration-300"
                     enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
+                    leave-active-class="transition ease-in-out duration-300"
                     leave-to-class="opacity-0"
                 >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600"
-                    >
-                        Saved.
+                    <p v-if="form.recentlySuccessful" class="text-sm text-green-700">
+                        Salvo com sucesso!
                     </p>
                 </Transition>
             </div>

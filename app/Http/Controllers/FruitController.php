@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Fruit;
+use Illuminate\Http\Request;
 
 class FruitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $fruits = [
             ['id' => 1, 'name' => 'Maçã', 'price' => 75.00, 'image' => 'https://images.unsplash.com/photo-1630563451961-ac2ff27616ab?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387', 'description' => 'Maçã fresca e crocante.', 'category' => 'Frutas Vermelhas'],
@@ -40,8 +42,12 @@ class FruitController extends Controller
             ['id' => 15, 'name' => 'Papaia', 'price' => 85.00, 'image' => 'https://images.unsplash.com/photo-1619535962037-feb40b6823fd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=399', 'description' => 'Mamão fresco e doce.', 'category' => 'Frutas Tropicais'],
         ];
 
+        $cart = $request->session()->get('cart', []);
+        $cartCount = array_sum(array_column($cart, 'quantity'));
+
         return Inertia::render('Fruits/Index', [
-            'fruits' => $fruits
+            'fruits' => $fruits,
+            'cartCount' => $cartCount
         ]);
     }
 }

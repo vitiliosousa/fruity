@@ -101,6 +101,7 @@
           >
             {{ processing ? 'Processando...' : 'Finalizar Compra' }}
           </button>
+          <p class="text-sm mt-5 text-gray-700">Um email de confirmação sera enviado para {{$page.props.auth.user.email}}</p>
         </div>
 
       </div>

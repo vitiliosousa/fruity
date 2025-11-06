@@ -44,7 +44,9 @@ class CartController extends Controller
         
         $request->session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Item adicionado ao carrinho!');
+        $cartCount = array_sum(array_column($cart, 'quantity'));
+
+        return redirect()->back()->with(['success'=>'Item adicionado ao carrinho!', '$cartCount' => $cartCount]);
     }
 
     public function remove(Request $request, $index)
