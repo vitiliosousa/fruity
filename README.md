@@ -160,14 +160,6 @@ No MySQL, execute:
 CREATE DATABASE fruity CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 5. Configure o Resend (Opcional - para emails)
-
-Obtenha uma chave API em [resend.com](https://resend.com) e adicione ao `.env`:
-
-```env
-RESEND_KEY=re_sua_chave_aqui
-```
-
 ### 6. Execute as Migrations e Seeders
 
 ```bash
