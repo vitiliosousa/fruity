@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\FruitController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -37,6 +39,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+});
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::get('/create', [AdminController::class, 'create'])->name('create');
+    
+    Route::post('/', [AdminController::class, 'store'])->name('store');
+
+    Route::prefix('{fruit}')->group(function () {
+        Route::get('/edit', [AdminController::class, 'edit'])->name('edit');
+        Route::put('/', [AdminController::class, 'update'])->name('update');
+        Route::delete('/', [AdminController::class, 'destroy'])->name('destroy');
+    });
 });
 
 
